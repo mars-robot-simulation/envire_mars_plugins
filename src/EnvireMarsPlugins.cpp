@@ -128,7 +128,7 @@ namespace mars
                         }
                     }                    
                     // 2. call plugin init
-                    std::shared_ptr<ItemPlugin> plugin{dynamic_cast<ItemPlugin*>(pluginLib)};
+                    ItemPlugin *plugin = dynamic_cast<ItemPlugin*>(pluginLib);
                     if(!plugin)
                     {
                         LOG_ERROR("envire_mars_plugins: Unable to cast ItemPugin from \"%s\" for item \"%s\"\n", pluginLibName.c_str(), frameId.c_str());
@@ -136,10 +136,7 @@ namespace mars
                     }
                     plugin->initPlugin(ControlCenter::envireGraph,
                                        ControlCenter::graphTreeView,
-                                       frameId);
-                    // 3. attache instance to graph
-                    envire::core::Item<ItemPluginItem>::Ptr pluginItemPtr{new envire::core::Item<ItemPluginItem>{ItemPluginItem(std::move(plugin), plugin->getLibName())}};
-                    ControlCenter::envireGraph->addItemToFrame(frameId, pluginItemPtr);
+                                       frameId, pluginConfig);
                 }
             }
         }
