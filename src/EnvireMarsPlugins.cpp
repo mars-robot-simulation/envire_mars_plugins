@@ -113,6 +113,7 @@ namespace mars
                         return;
                     }
                     std::string pluginLibName = pluginConfig["plugin_lib_name"];
+
                     // 1. try to get new instance
                     lib_manager::LibInterface *pluginLib;
                     pluginLib = libManager->getNewInstance(pluginLibName);
@@ -127,16 +128,24 @@ namespace mars
                             return;
                         }
                     }                    
+
                     // 2. call plugin init
-                    ItemPlugin *plugin = dynamic_cast<ItemPlugin*>(pluginLib);
+                    std::shared_ptr<ItemPlugin> plugin;
+                    plugin.reset(dynamic_cast<ItemPlugin*>(pluginLib));
                     if(!plugin)
                     {
                         LOG_ERROR("envire_mars_plugins: Unable to cast ItemPugin from \"%s\" for item \"%s\"\n", pluginLibName.c_str(), frameId.c_str());
+                        delete pluginLib;
                         return;
                     }
                     plugin->initPlugin(ControlCenter::envireGraph,
                                        ControlCenter::graphTreeView,
                                        frameId, pluginConfig);
+
+                    // add plugin to graph
+                    auto pluginItem = interfaces::ItemPluginItem{plugin, pluginLibName};
+                    auto envireItemPtr = envire::core::Item<interfaces::ItemPluginItem>::Ptr{new envire::core::Item<interfaces::ItemPluginItem>{pluginItem}};
+                    ControlCenter::envireGraph->addItemToFrame(frameId, envireItemPtr);
                 }
             }
         }
