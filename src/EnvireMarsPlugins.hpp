@@ -20,6 +20,7 @@
 #include <envire_types/geometry/Cylinder.hpp>
 #include <envire_types/geometry/Mesh.hpp>
 #include <envire_types/geometry/Sphere.hpp>
+#include <envire_types/Link.hpp>
 
 namespace mars
 {
@@ -34,7 +35,8 @@ namespace mars
                                   public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Capsule>>,
                                   public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Cylinder>>,
                                   public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Mesh>>,
-                                  public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Sphere>>
+                                  public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Sphere>>,
+                                  public envire::core::GraphItemEventDispatcher<envire::core::Item<::envire::types::Link>>
 
         {
 
@@ -62,6 +64,7 @@ namespace mars
             virtual void itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::geometry::Cylinder>>& e) override;
             virtual void itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::geometry::Mesh>>& e) override;
             virtual void itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::geometry::Sphere>>& e) override;
+            virtual void itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::Link>>& e) override;
 
         private:
             void handleConfig(configmaps::ConfigMap &config, const envire::core::FrameId &frameId);

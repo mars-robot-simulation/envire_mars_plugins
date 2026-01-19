@@ -30,6 +30,7 @@ namespace mars
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Cylinder>>::subscribe(ControlCenter::envireGraph.get());
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Mesh>>::subscribe(ControlCenter::envireGraph.get());
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Sphere>>::subscribe(ControlCenter::envireGraph.get());
+            GraphItemEventDispatcher<envire::core::Item<::envire::types::Link>>::subscribe(ControlCenter::envireGraph.get());
             // TODO: extend to other types such as motors, sensors, joints
         }
 
@@ -43,6 +44,7 @@ namespace mars
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Cylinder>>::unsubscribe();
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Mesh>>::unsubscribe();
             GraphItemEventDispatcher<envire::core::Item<::envire::types::geometry::Sphere>>::unsubscribe();
+            GraphItemEventDispatcher<envire::core::Item<::envire::types::Link>>::unsubscribe();
         }
 
         void EnvireMarsPlugins::itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::geometry::Heightfield>>& e)
@@ -94,6 +96,14 @@ namespace mars
         }
 
         void EnvireMarsPlugins::itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::geometry::Sphere>>& e)
+        {
+            auto& geom = e.item->getData();
+            auto config = geom.getFullConfigMap();
+
+            handleConfig(config, e.frame);
+        }
+
+        void EnvireMarsPlugins::itemAdded(const envire::core::TypedItemAddedEvent<envire::core::Item<::envire::types::Link>>& e)
         {
             auto& geom = e.item->getData();
             auto config = geom.getFullConfigMap();
